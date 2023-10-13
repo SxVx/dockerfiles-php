@@ -1,0 +1,34 @@
+# Utilizamos la imagen oficial de PHP con Apache
+FROM php:8.0-apache
+
+# Install dependencies
+RUN apt update
+RUN apt install -y \
+    build-essential \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    locales \
+    libzip-dev \
+    zip \
+    jpegoptim optipng pngquant gifsicle \
+    vim \
+    unzip \
+    git \
+    curl
+
+RUN git config --global user.email "drilosv13@gmail.com"
+RUN git config --global user.name "José Enrique "
+
+# Configuración de PHP - Instala lo necesario para que php funcione
+RUN docker-php-ext-install pdo pdo_mysql mysqli
+RUN a2enmod rewrite
+
+# Instalación de Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Directorio de trabajo
+WORKDIR /var/www/html
+
+# Exponer el puerto 80
+EXPOSE 80
